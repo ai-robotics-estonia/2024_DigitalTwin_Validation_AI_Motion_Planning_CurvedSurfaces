@@ -1,74 +1,92 @@
-*This is a template repository for this organization. Start by replacing the placeholder for the project name with its actual title.*
-
-# [Demonstration Project title]
+# Digital twin for development and validation of AI-based motion planning and control for robot-assisted processing of curved surfaces
 
 ## Summary
-| Company Name | [Company](https://website.link) |
+| Company Name | [ASG Robotics](https://asg-robotics.com) |
 | :--- | :--- |
-| Development Team Lead Name | [Dr. John Smith](https://profile.link) |
-| Development Team Lead E-mail | [email@example.com](mailto:email@example.com) |
-| Duration of the Demonstration Project | month/year-month/year |
-| Final Report | [Example_report.pdf](https://github.com/ai-robotics-estonia/_project_template_/files/13800685/IC-One-Page-Project-Status-Report-10673_PDF.pdf) |
+| Development Team Lead Name | [Karl Kruusamäe](https://www.etis.ee/CV/Karl_Kruusamae/eng) |
+| Development Team Lead E-mail | [karl.kruusamae@ut.ee](mailto:karl.kruusamae@ut.ee) |
+| Duration of the Demonstration Project | 09/2024-05/2925 |
+| Final Report | [final_report.pdf](./files/final_report.pdf) |
 
-### Each project has an alternative for documentation
-1. Fill in the [description](#description) directly in the README below *OR*;
-2. make a [custom agreement with the AIRE team](#custom-agreement-with-the-AIRE-team).
 
 # Description
 ## Objectives of the Demonstration Project
-*Please describe your project objectives in detail.*
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The primary goal of this project was to develop and evaluate an open-source, modular software pipeline to enable surface-conforming Cartesian motion planning and execution, with a specific focus on robotic cutting and welding applications. The project aimed to create a digital twin of a robot-assisted process for curved surfaces, which could be used to test, validate, and benchmark motion planning algorithms. The developed digital twin pipeline seeks to bridge the gap between expensive, proprietary commercial systems and the more limited open-source alternatives by providing an integrated, robot-agnostic solution using the ROS 2 and MoveIt frameworks. A key objective was to create a platform that could facilitate the integration and testing of new AI-based motion planning algorithms, thereby supporting flexible manufacturing with parametric programming.
 
 ## Activities and Results of the Demonstration Project
 ### Challenge
-*Please describe challenge addressed (i.e, whether and how the initial challenge was changed during the project, for which investment the demonstration project was provided).*
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The project addressed a significant challenge in manufacturing automation: the processing of complex, curved surfaces with robot manipulators, such as in milling and welding. Existing solutions are often proprietary, costly, and tied to specific hardware, creating a high barrier to entry for smaller companies and researchers. Open-source tools, while available, lacked a comprehensive, integrated, and geometry-aware pipeline for planning and executing trajectories on such surfaces. When automation is not feasible due to mathematical complexity or kinematic constraints, these tasks are performed manually by human workers. This project aimed to create an accessible, open-source solution to this problem. The initial challenge remained the central focus throughout the project.
 
 ### Data Sources
-*Please describe which data was used for the technological solution.*  
-- [Source 1],
-- [Source 2],
-- etc... .
+
+The technological solution utilizes a 3D model of the workpiece. In industrial applications, these models typically originate from Computer-Aided Design (CAD) files or 3D scans. For this demonstration project, the following specific data was used:
+
+- 3D mesh models of pipe geometries created in Blender.
+- Point cloud data with estimated surface normals, generated from the meshes using the Open3D library.
+- Robot kinematic models (URDF descriptions) for the four validation platforms: Universal Robots UR5, UR20, Fanuc m10ia, and Kuka iiwa14.
+- Motion execution data (joint states and end-effector poses) collected at 100 Hz during simulations for performance evaluation and benchmarking.
 
 ### AI Technologies
-*Please describe and justify the use of selected AI technologies.*
-- [AI technology 1],
-- [AI technology 2],
-- etc... .
+The project developed a digital twin and a motion planning pipeline designed to integrate, test, and benchmark various motion planning approaches, including future AI-based methods like diffusion policy and learning from demonstration. The project focused on creating and validating the essential infrastructure that enables the safe testing and deployment of novel AI algorithms. The pipeline leverages established robotics techniques such as inverse kinematics (IK) solvers, and the solution was validated and benchmarked using several of MoveIt's existing Cartesian motion planners:
+
+- MoveIt Cartesian Interpolator (ComputeCartesianPath)
+- Pilz Industrial Motion Planner
+- MoveIt Servo
+
+This framework provides the baseline for comparing these planners and future AI-based solutions in a standardized environment.
 
 ### Technological Results
-*Please describe the results of testing and validating the technological solution.*
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The primary technological result of the project is a process-specific but universally scalable digital twin for robot-assisted processing of curved surfaces, along with a corresponding motion planning pipeline. The pipeline was rigorously validated in a simulation environment with the four distinct robot models. The evaluation benchmarked the performance of the three motion planning back-ends, with key findings showing a clear trade-off between accuracy, motion smoothness, and velocity control. For instance, the ComputeCartesianPath and Pilz planners demonstrated excellent path-tracking accuracy (sub-millimeter), while MoveIt Servo proved far superior in maintaining a consistent end-effector velocity, a critical factor for processes like welding.
 
 ### Technical Architecture
-*Please describe the technical architecture (e.g, presented graphically, where the technical solution integration with the existing system can also be seen).*
-- [Component 1],
-- [Component 2], 
-- etc... .
 
-![backend-architecture](https://github.com/ai-robotics-estonia/_project_template_/assets/15941300/6d405b21-3454-4bd3-9de5-d4daad7ac5b7)
+The system is architected as a modular ROS 2 pipeline. Its workflow is as follows:
+
+- Input: The process starts with a 3D mesh of the workpiece and a 2D reference path (e.g., a circle defining the desired cut).
+- Waypoint Generation: A core module projects the 2D reference path onto the 3D mesh surface using an efficient nearest-neighbor search.
+- Feasibility Analysis: The generated 3D waypoints (poses) are checked for kinematic feasibility using the integrated Reach tool and a custom "Seed State Finder" algorithm.
+- Trajectory Planning & Execution: The feasible poses are passed to a MoveIt execution back-end (e.g., ComputeCartesianPath, Pilz, or Servo) which plans the final trajectory and sends it to the robot's controllers.
+- Visualization: The entire process, including the robot, the workpiece (as a collision object), and the executed path, is visualized using RViz.
+
+<img src="./assets/system_overview.png" alt="GUI Robot Monitoring" width="500">
 
 
 ### User Interface 
-*Please describe the details about the user interface(i.e, how does the client 'see' the technical result, whether a separate user interface was developed, command line script was developed, was it validated as an experiment, can the results be seen in ERP or are they integrated into work process)*
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The system includes a graphical user interface (GUI) designed specifically for positioning the 2D reference path (the "stencil" for the cut or weld) in relation to the 3D workpiece model. This GUI allows the user to precisely place the contour and provides a live-updating preview of the final projected path on the object's surface. The primary interface for monitoring the overall process, including the robot's motion and environment, is RViz, the standard 3D visualization tool for ROS. The solution was validated as an experiment in a simulation environment.
+<div style="display: flex; gap: 20px; justify-content: space-around;">
+  <figure style="text-align: center;">
+    <img src="./assets/gui_projection.gif" alt="GUI Path Projection" width="200">
+    <figcaption>Path projection interface</figcaption>
+  </figure>
+  <figure style="text-align: center;">
+    <img src="./assets/gui_ur20.gif" alt="GUI Robot Monitoring" width="200">
+    <figcaption>Robot monitoring in RViz</figcaption>
+  </figure>
+</div>
 
 ### Future Potential of the Technical Solution
-*Please describe the potential areas for future use of the technical solution.*
-- [Use case 1],
-- [Use case 2],
-- etc... .
+
+While the project's primary focus was on robotic pipe cutting and welding, the framework is broadly applicable to any robotic task that requires an end-effector to precisely follow a path on a complex or curved surface.
+
+- Milling
+- Painting and Depainting
+- Sandblasting
+- Polishing
+- Arc Welding
+- Automated Quality Control and Inspection
 
 ### Lessons Learned
-*Please describe the lessons learned (i.e. assessment whether the technological solution actually solved the initial challenge).*
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The project successfully solved the initial challenge by creating a functional, robot-agnostic, open-source pipeline for programming complex, surface-conforming robotic tasks like welding and cutting. This work effectively fills a documented gap in the open-source robotics toolset.
 
-# Custom agreement with the AIRE team
-*If you have a unique project or specific requirements that don't fit neatly into the Docker file or description template options, we welcome custom agreements with our AIRE team. This option allows flexibility in collaborating with us to ensure your project's needs are met effectively.*
+Key lessons learned from the project include:
 
-*To explore this option, please contact our demonstration projects service manager via katre.eljas@taltech.ee with the subject line "Demonstration Project Custom Agreement Request - [Your Project Name]." In your email, briefly describe your project and your specific documentation or collaboration needs. Our team will promptly respond to initiate a conversation about tailoring a solution that aligns with your project goals.*
+- No One-Size-Fits-All Planner: The detailed benchmarking revealed a clear trade-off between different motion planning strategies. Planners like ComputeCartesianPath and Pilz provide superior path accuracy, which is crucial for precision milling, whereas MoveIt Servo excels at maintaining consistent velocity, a critical requirement for weld quality. This indicates that the choice of planner must be tailored to the specific application's most important constraints.
+- The Importance of a Good Start: The custom-developed "Seed State Finder" algorithm proved to be highly effective and almost essential for ensuring successful trajectory generation, reliably overcoming the non-deterministic behavior of some inverse kinematics solvers.
+- Jerk vs. Accuracy: The smoothest motion, in terms of lowest jerk, was achieved by the ComputeCartesianPath back-end, which also had high accuracy. This suggests that for tasks sensitive to vibration, it is a strong candidate.
+- Complexity of Integration: The project underscored that even with powerful frameworks like ROS 2 and MoveIt, significant, dedicated engineering effort is required to integrate components into a cohesive, validated, and user-friendly pipeline for advanced industrial applications.
+
