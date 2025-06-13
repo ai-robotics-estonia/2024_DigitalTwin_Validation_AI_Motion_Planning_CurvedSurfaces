@@ -1,0 +1,3 @@
+[submodule "Surfmotion"]
+	path = Surfmotion
+	url = https://github.com/carlhjal/Surfmotion
