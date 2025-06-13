@@ -60,11 +60,11 @@ The system includes a graphical user interface (GUI) designed specifically for p
 <div style="display: flex; gap: 20px; justify-content: space-around;">
   <figure style="text-align: center;">
     <img src="./assets/gui_projection.gif" alt="GUI Path Projection" width="200">
-    <figcaption><br>Path projection interface</figcaption>
+    <figcaption>Path projection interface</figcaption>
   </figure>
   <figure style="text-align: center;">
     <img src="./assets/gui_ur20.gif" alt="GUI Robot Monitoring" width="200">
-    <figcaption><br>Robot monitoring in RViz</figcaption>
+    <figcaption>Robot monitoring in RViz</figcaption>
   </figure>
 </div>
 
