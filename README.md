@@ -1,4 +1,4 @@
-# Digital twin for development and validation of AI-based motion planning and control for robot-assisted processing of curved surfaces
+# Digital twin for validation of AI-based motion planning and control for robot-assisted processing of curved surfaces
 
 ## Summary
 | Company Name | [ASG Robotics](https://asg-robotics.com) |
@@ -12,7 +12,7 @@
 # Description
 ## Objectives of the Demonstration Project
 
-The primary goal of this project was to develop and evaluate an open-source, modular software pipeline to enable surface-conforming Cartesian motion planning and execution, with a specific focus on robotic cutting and welding applications. The project aimed to create a digital twin of a robot-assisted process for curved surfaces, which could be used to test, validate, and benchmark motion planning algorithms. The developed digital twin pipeline seeks to bridge the gap between expensive, proprietary commercial systems and the more limited open-source alternatives by providing an integrated, robot-agnostic solution using the ROS 2 and MoveIt frameworks. A key objective was to create a platform that could facilitate the integration and testing of new AI-based motion planning algorithms, thereby supporting flexible manufacturing with parametric programming.
+The primary goal of this project was to evaluate an open-source, modular software pipeline to enable surface-conforming Cartesian motion planning and execution, with a specific focus on robotic cutting and welding applications. The project aimed to create a digital twin of a robot-assisted process for curved surfaces, which could be used to test, validate, and benchmark motion planning algorithms. The tested digital twin pipeline seeks to bridge the gap between expensive, proprietary commercial systems and the more limited open-source alternatives by providing an integrated, robot-agnostic solution using the ROS 2 and MoveIt frameworks. A key objective was to create a platform that could facilitate the integration and testing of new AI-based motion planning algorithms, thereby supporting flexible manufacturing with parametric programming.
 
 ## Activities and Results of the Demonstration Project
 ### Challenge
@@ -29,7 +29,7 @@ The technological solution utilizes a 3D model of the workpiece. In industrial a
 - Motion execution data (joint states and end-effector poses) collected at 100 Hz during simulations for performance evaluation and benchmarking.
 
 ### AI Technologies
-The project developed a digital twin and a motion planning pipeline designed to integrate, test, and benchmark various motion planning approaches, including future AI-based methods like diffusion policy and learning from demonstration. The project focused on creating and validating the essential infrastructure that enables the safe testing and deployment of novel AI algorithms. The pipeline leverages established robotics techniques such as inverse kinematics (IK) solvers, and the solution was validated and benchmarked using several of MoveIt's existing Cartesian motion planners:
+The project validated a digital twin and a motion planning pipeline designed to integrate, test, and benchmark various motion planning approaches, including future AI-based methods like diffusion policy and learning from demonstration. The project focused on creating and validating the essential infrastructure that enables the safe testing and deployment of novel AI algorithms. The pipeline leverages established robotics techniques such as inverse kinematics (IK) solvers, and the solution was validated and benchmarked using several of MoveIt's existing Cartesian motion planners:
 
 - MoveIt Cartesian Interpolator (ComputeCartesianPath)
 - Pilz Industrial Motion Planner
@@ -86,7 +86,7 @@ The project successfully solved the initial challenge by creating a functional, 
 Key lessons learned from the project include:
 
 - No One-Size-Fits-All Planner: The detailed benchmarking revealed a clear trade-off between different motion planning strategies. Planners like ComputeCartesianPath and Pilz provide superior path accuracy, which is crucial for precision milling, whereas MoveIt Servo excels at maintaining consistent velocity, a critical requirement for weld quality. This indicates that the choice of planner must be tailored to the specific application's most important constraints.
-- The Importance of a Good Start: The custom-developed "Seed State Finder" algorithm proved to be highly effective and almost essential for ensuring successful trajectory generation, reliably overcoming the non-deterministic behavior of some inverse kinematics solvers.
+- The Importance of a Good Start: The custom-prepared "Seed State Finder" algorithm proved to be highly effective and almost essential for ensuring successful trajectory generation, reliably overcoming the non-deterministic behavior of some inverse kinematics solvers.
 - Jerk vs. Accuracy: The smoothest motion, in terms of lowest jerk, was achieved by the ComputeCartesianPath back-end, which also had high accuracy. This suggests that for tasks sensitive to vibration, it is a strong candidate.
 - Complexity of Integration: The project underscored that even with powerful frameworks like ROS 2 and MoveIt, significant, dedicated engineering effort is required to integrate components into a cohesive, validated, and user-friendly pipeline for advanced industrial applications.
 
